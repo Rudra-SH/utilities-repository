@@ -18,6 +18,7 @@ async function run() {
       }
     );
 
+    core.info(commits);
     core.info(`Total commits found: ${commits.length}`);
     const commitShas = commits.map(commit => commit.sha);
     core.setOutput('commits', JSON.stringify(commitShas));
