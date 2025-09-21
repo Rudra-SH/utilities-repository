@@ -2,12 +2,7 @@ name: Bundle Action Code
 
 on:
   push:
-    paths:
-      - '**/src/**'
-      - '**/action.yml'
-      - 'package.json'
-      - 'package-lock.json'
-
+  
 jobs:
   bundle:
     runs-on: ubuntu-latest
