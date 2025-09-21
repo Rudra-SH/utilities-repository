@@ -1,3 +1,4 @@
+import * as utils from '../../utils/main.js';
 const core = require('@actions/core');
 const github = require('@actions/github');
 
@@ -18,7 +19,7 @@ async function run() {
       }
     );
 
-    core.info(commits);
+    utils.logGroupData('Fetched Commits', commits);
     core.info(`Total commits found: ${commits.length}`);
     const commitShas = commits.map(commit => commit.sha);
     core.setOutput('commits', JSON.stringify(commitShas));
