@@ -1,0 +1,13 @@
+name: 'List Commits'
+description: 'GitHub Action to list commits in a repository'
+inputs:
+  token:
+    description: 'GitHub token for authentication'
+    required: false
+    default: '${{ github.token }}'
+outputs:
+  commits:
+    description: 'JSON array of commit SHAs'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
