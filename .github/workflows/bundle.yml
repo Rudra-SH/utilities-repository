@@ -1,0 +1,37 @@
+name: Bundle Action Code
+
+on:
+  push:
+    paths:
+      - '**/src/**'
+      - '**/action.yml'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Find and Bundle Actions
+        run: |
+          for dir in $(find . -type f -name "action.yml" -exec dirname {} \;); do
+            if [ -f "$dir/src/index.js" ]; then
+              echo "Bundling action in $dir"
+              mkdir -p "$dir/dist"
+              npx esbuild "$dir/src/index.js" --bundle --platform=node --outfile="$dir/dist/index.js"
+              git add "$dir/dist/index.js"
+            fi
+          done
+      - name: Commit bundled code
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git commit -m "Auto-bundle action code" || echo "No changes to commit"
+          git push
